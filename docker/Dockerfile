@@ -21,15 +21,15 @@ COPY ../laravel /opt/html
 
 WORKDIR /opt/html
 
-RUN composer install
+#RUN composer install
 
-RUN npm install
+#RUN npm install
 
-RUN npm install -dev typescript@5.6.3
+#RUN npm install -dev typescript@5.6.3
 
-RUN npm install -dev vue-tsc@2.1.10
+#RUN npm install -dev vue-tsc@2.1.10
 
-RUN npm run dev
+#RUN npm run dev
 CMD ["php-fpm"]
 
 EXPOSE 8000
