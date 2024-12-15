@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  laravel_app:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    container_name: webike_bi_app
+    networks:
+      - laravel_network
+    volumes:
+      - ./logs:/opt/logs
+      - type: bind
+        source: ./laravel
+        target: /opt/html
+    ports:
+      - "5173:5173" # Vue.js dev server
+      - "8000:8000" # Laravel development server
+    restart: always
+
+  nginx:
+    image: nginx:alpine
+    container_name: webike_bi_nginx
+    ports:
+      - "2501:80"
+      - "2502:443"
+    volumes:
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - laravel_app
+    networks:
+      - laravel_network
+
+networks:
+  laravel_network:
+    ipam:
+      config:
+        - subnet: 172.63.5.0/24
